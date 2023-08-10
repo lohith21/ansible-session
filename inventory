@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [master]
 172.31.0.100
 
@@ -6,3 +7,15 @@
 
 [databases]
 172.31.0.102
+=======
+mail.example.com
+
+[webservers]
+foo.example.com
+bar.example.com
+
+[dbservers]
+one.example.com
+two.example.com
+three.example.com
+>>>>>>> b66e8ff8ebddb3daec1d726cc502452a438db047

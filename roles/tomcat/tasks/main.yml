@@ -1,0 +1,66 @@
+---
+- name: install jdk
+  apt:
+    name: openjdk-11-jdk-headless
+    state: present
+# - name: create tomcat dir
+#   file:
+#     path: /opt/tomcat
+#     state: directory
+
+- name: Added a tomcat user
+  ansible.builtin.user:
+    name: tomcat
+    shell: /bin/false
+    home: /opt/tomcat
+
+# - name: Download foo.conf
+#   ansible.builtin.get_url:
+#     url: https://downloads.apache.org/tomcat/tomcat-10/v10.1.10/bin/apache-tomcat-10.1.10.tar.gz
+#     dest: /tmp/apache-tomcat-10.1.10.tar.gz
+#     mode: '0440'
+- name: Extract pache-tomcat-10.1.10.tar.gz into /opt/tomcat
+  ansible.builtin.unarchive:
+    src: https://downloads.apache.org/tomcat/tomcat-10/v10.1.10/bin/apache-tomcat-10.1.10.tar.gz
+    dest: /opt/tomcat/
+    remote_src: true
+- name: Create a symbolic link for tomcat
+  file:
+    src: /opt/tomcat/apache-tomcat-10.1.10
+    dest: /opt/tomcat/latest
+    owner: tomcat
+    state: link
+
+- name: Change permissions for tomcat directory recursively
+  file:
+    dest: /opt/tomcat
+    owner: tomcat
+    state: directory
+    mode: 0775
+    recurse: yes
+
+- name: Change file ownership, group and permissions
+  file:
+    path: "{{ item }}"
+    owner: tomcat
+    mode: '0777'
+  with_items:
+  - "/opt/tomcat/latest/bin/startup.sh"
+  - "/opt/tomcat/latest/bin/shutdown.sh"
+- name: copy tomcat service file
+  copy:
+    src: tomcat.service
+    dest: /etc/systemd/system/tomcat.service
+  notify: restart tomcat service
+- name: start tomcat service 
+  service:
+    name: tomcat
+    state: started
+    enabled: yes
+- name: download war file
+  ansible.builtin.get_url:
+    url: https://github.com/AKSarav/SampleWebApp/raw/master/dist/SampleWebApp.war
+    dest: /opt/tomcat/latest/webapps/ROOT.war
+    mode: '0777'
+    owner: tomcat
+  notify: restart tomcat service
