@@ -1,0 +1,12 @@
+- name: Display some facts
+  hosts: databases
+
+  tasks:
+    - name: Display all facts
+      debug:
+        var: ansible_facts
+
+    - name: Display a list of all IPv4 addresses
+      debug:
+        var: ansible_facts['default_ipv4']['gateway']
+

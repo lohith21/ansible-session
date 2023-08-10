@@ -1,0 +1,27 @@
+---
+- name: create users and groups
+  hosts: nodes
+  gather_facts: yes
+  become: yes
+  
+  tasks:
+#    - name: create groups
+#      group:
+#        name: "{{ item }}"
+#        state: present
+#      loop:
+#          - paas
+#          - iaas
+
+    - name: create users
+      debug:
+        msg: "{{ item.key }}"
+
+#      user:
+#        name: "{{ item.name }}"
+#        groups: "{{ item.groups }}"
+      with_dict:
+        - { name: 'Lohith', groups: 'iaas' }
+        - { name: 'Vikas', groups: 'paas' }
+        - { name: 'Ranjith', groups: 'iaas' }
+        - { name: 'Vishal', groups: 'paas' }

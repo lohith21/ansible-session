@@ -1,0 +1,35 @@
+---
+- name: Multiple filters example
+  hosts: webservers
+  vars:
+    mylist:
+      - 3
+      - 9
+      - 1
+      - 7
+      - 5
+
+    lnames:
+      - lohi
+      - rutvi
+      - rushi
+      - indu
+
+    myips:
+      - 192.0.2.1
+      - 10.0.0.1
+      - 304.254.1.200
+
+  tasks:
+    - name: Display sorted list of unique items
+      debug:
+        msg: "{{ mylist | unique | sort }}"
+
+
+    - name: display capital letter
+      debug:
+        msg: "{{ lnames | capitalize }}"
+
+    - name: display Ip addresses
+      debug:
+        msg: "{{ myips | ipaddr }}"

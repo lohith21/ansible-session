@@ -1,0 +1,11 @@
+# defined variables for inventory nodes
+    username:
+      test:
+        uname: test123
+        descript: Test User Account
+        password: "{{ secret }}"
+
+    db_users:
+      - dbuser01
+      - dbuser02
+      - dbuser03
