@@ -1,0 +1,35 @@
+---
+- name: Install Docker
+  hosts: localhost
+  become: true  # Run tasks with elevated privileges
+
+  tasks:
+    - name: Install Docker dependencies
+      apt:
+        update_cache: true
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg
+          - lsb-release
+        state: present
+
+    - name: Add Docker GPG key
+      shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+
+    - name: Add Docker repository
+      apt_repository:
+        repo: "deb [arch=and64] https://download.docker.com/linux/ubuntu/dists/focal stable"
+        state: present
+
+    - name: Install Docker
+      apt:
+        name: docker-ce
+        state: present
+
+    - name: Start and enable Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes

@@ -1,0 +1,13 @@
+### ansible -m copy -a "dest=hello content=world" localhost --check --diff
+- name: copy module test
+  hosts: all
+  tasks:
+    - copy: 
+        dest: hello
+        content: "Hello World"
+    - command: date
+
+- name: install ansible lint on controller
+  hosts: localhost
+  tasks:
+    - pip: name=ansible-lint

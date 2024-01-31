@@ -1,0 +1,9 @@
+---
+- name: test playbook
+  hosts: all
+  vars:
+    my_server_port: 89
+  tasks:
+    - ansible.builtin.template:
+        src: server.conf.j2
+        dest: /etc/server.conf

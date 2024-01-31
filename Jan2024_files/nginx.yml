@@ -1,0 +1,16 @@
+---
+- name: install nginx and update the apt package
+  hosts: worker1
+  become: true
+  tasks:
+  - debug:
+      var: ansible_distribution_version
+  - ansible.builtin.apt:
+      name: nginx
+      state: latest
+      update_cache: yes
+
+  - copy:
+      src: my_app.html
+      dest: /var/www/html/index.nginx-debian.html
+        
